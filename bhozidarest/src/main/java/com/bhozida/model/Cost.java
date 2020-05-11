@@ -13,7 +13,7 @@ import lombok.Data;
 @Entity
 public class Cost implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String type;
     private String item;
@@ -21,7 +21,7 @@ public class Cost implements Serializable {
     private Double cost;
     private Double quantity;
     public Cost(){
-        
+
     }
     public Cost(String type, String item,String unit,Double cost, Double quantity){
         this.type=type;
