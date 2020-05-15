@@ -37,7 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
                 //.antMatchers("**").permitAll()
                 .antMatchers("/api/auth/login").permitAll().antMatchers("/api/auth/register").permitAll()
-                .antMatchers("/api/v1/**").hasAuthority("ADMIN").anyRequest().authenticated().and().csrf()
+                //.antMatchers("/api/v1/**").hasAuthority("ADMIN").anyRequest().authenticated().and().csrf()
+                .antMatchers("/api/v1/**").authenticated().and().csrf()
                 .disable().exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint()).and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
     http.cors();
