@@ -10,7 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.bhozida.model.Profile;
 
 @Entity
 public class User {
@@ -25,6 +29,10 @@ public class User {
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @Column(name = "ROLE_ID")
     private Set<Role> roles = new HashSet<Role>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Profile profile;
 
     public Long getId() {
         return Id;
@@ -72,6 +80,14 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     
