@@ -36,12 +36,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    public void saveUser(final User user) {
+    public User saveUser(final User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
         final Role userRole = roleRepository.findByRole("ADMIN");
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
@@ -68,5 +68,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserDetails buildUserForAuthentication(final User user, final List<GrantedAuthority> authorities) {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
+    public User updateProfile(final User user) {
+        return userRepository.save(user);
     }
 }

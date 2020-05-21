@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bhozida.security.repository.UserRepository;
+import com.bhozida.model.Profile;
+import com.bhozida.repository.ProfileRepository;
 import com.bhozida.security.config.CustomUserDetailsService;
 import com.bhozida.security.config.JwtTokenProvider;
 import com.bhozida.security.model.User;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
@@ -34,6 +37,9 @@ public class AuthController {
 
     @Autowired
     UserRepository users;
+
+    @Autowired
+    ProfileRepository profileRepository;
 
     @Autowired
     private CustomUserDetailsService userService;
@@ -61,7 +67,18 @@ public class AuthController {
         if (userExists != null) {
             throw new BadCredentialsException("User with username: " + user.getEmail() + " already exists");
         }
+
+        // create related profile and add it to the new user
         userService.saveUser(user);
+        User newUser = userService.findUserByEmail(user.getEmail());
+        System.out.println("User -----------------------------------------------------" + newUser.getId());
+        Profile newProfile = new Profile(newUser.getId(),newUser);
+        newProfile = profileRepository.save(newProfile);
+        newUser.setProfile(newProfile);
+        userService.saveUser(user);
+        
+
+        System.out.println("User -----------------------------------------------------" + newUser.toString());
         Map<Object, Object> model = new HashMap<>();
         model.put("message", "User registered successfully");
         return ok(model);

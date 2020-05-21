@@ -30,8 +30,7 @@ public class User {
     @Column(name = "ROLE_ID")
     private Set<Role> roles = new HashSet<Role>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
     private Profile profile;
 
     public Long getId() {
@@ -90,8 +89,6 @@ public class User {
         this.profile = profile;
     }
 
-    
-    
     
 }
     

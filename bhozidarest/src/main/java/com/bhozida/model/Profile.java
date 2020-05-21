@@ -13,18 +13,17 @@ import javax.persistence.Table;
 import com.bhozida.security.model.User;
 
 import lombok.ToString;
+
 @ToString
 @Entity
 public class Profile {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
-    @OneToOne(mappedBy="profile")
+    @OneToOne()
     private User user;
 
-    //personal information    
+    // personal information
     private int yearOfBirth;
     private boolean maritalStatus;
     private int numberOfDirectDependencies;
@@ -32,24 +31,26 @@ public class Profile {
     private boolean carOwnership;
     private Double biggestExpense;
     private Double networthInUSD;
-    
-    //entrepreneur's background
+
     @Column(columnDefinition = "LONGTEXT")
-    private String countryOfResidence; //ZIM, SA, Other SADC, Africa, EU, UK, US, Asia, Other;
+    private String summary; // I am a business man etc;
+
+    // entrepreneur's background
     @Column(columnDefinition = "LONGTEXT")
-    private String businessType;  //services, manufacturing, agriculcure , all
+    private String countryOfResidence; // ZIM, SA, Other SADC, Africa, EU, UK, US, Asia, Other;
     @Column(columnDefinition = "LONGTEXT")
-    private String entrepreneurHistory; // summary 
-    private int entrepreneurStartYear; //1999
+    private String businessType; // services, manufacturing, agriculcure , all
+    @Column(columnDefinition = "LONGTEXT")
+    private String entrepreneurHistory; // summary
+    private int entrepreneurStartYear; // 1999
     private int employees;
     private int mentors;
     private int mentees;
     private boolean businessRegistered;
 
-
-    //entrepreneur interests
+    // entrepreneur interests
     @Column(columnDefinition = "LONGTEXT")
-    private String businessTypesOfInterest; //partnerships, shareholding, sole entrepreneur
+    private String businessTypesOfInterest; // partnerships, shareholding, sole entrepreneur
     @Column(columnDefinition = "LONGTEXT")
     private String industriesOfInterest;
     @Column(columnDefinition = "LONGTEXT")
@@ -59,13 +60,13 @@ public class Profile {
     @Column(columnDefinition = "LONGTEXT")
     private String businessPartnerGenderGroup;
 
-    //education
+    // education
     private boolean attendedFinancialLiteracyCourses;
     private boolean attendedSalesCoachingCourses;
     @Column(columnDefinition = "LONGTEXT")
     private String bestThreeMotivationalBooks;
     @Column(columnDefinition = "LONGTEXT")
-    private String highestQualification; //high school / university degree or none
+    private String highestQualification; // high school / university degree or none
 
     public Long getId() {
         return id;
@@ -292,8 +293,26 @@ public class Profile {
                 + yearOfBirth + "]";
     }
 
-    
- 
+    public Profile() {
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public Profile(Long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
+
+    public Profile(Long id) {
+        this.id = id;
+    }
+
     
 
 }
