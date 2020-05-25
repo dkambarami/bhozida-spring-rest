@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bhozida.security.repository.UserRepository;
+import com.bhozida.model.Image;
 import com.bhozida.model.Profile;
+import com.bhozida.repository.ImageRepository;
 import com.bhozida.repository.ProfileRepository;
 import com.bhozida.security.config.CustomUserDetailsService;
 import com.bhozida.security.config.JwtTokenProvider;
@@ -40,6 +42,9 @@ public class AuthController {
 
     @Autowired
     ProfileRepository profileRepository;
+
+    @Autowired
+    ImageRepository imageRepository;
 
     @Autowired
     private CustomUserDetailsService userService;
@@ -76,7 +81,12 @@ public class AuthController {
         newProfile = profileRepository.save(newProfile);
         newUser.setProfile(newProfile);
         userService.saveUser(user);
-        
+
+        // attach the profile picture to the profile with same id.
+        Image newImage = new Image(newProfile.getId(),newProfile);
+        newImage = imageRepository.save(newImage);
+        newProfile.setImage(newImage);
+        profileRepository.save(newProfile);
 
         System.out.println("User -----------------------------------------------------" + newUser.toString());
         Map<Object, Object> model = new HashMap<>();
